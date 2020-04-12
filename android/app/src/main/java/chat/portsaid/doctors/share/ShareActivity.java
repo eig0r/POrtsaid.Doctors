@@ -1,4 +1,4 @@
-package chat.rocket.reactnative.share;
+package chat.portsaid.doctors.share;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
