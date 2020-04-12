@@ -3,4 +3,6 @@
 3- cd /android
 4-./gradlew bundleRelease
 5- cd ..
-6- 
+6- npx react-native run-android --variant=release
+
+
