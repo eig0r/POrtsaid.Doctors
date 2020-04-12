@@ -1,4 +1,4 @@
-package chat.rocket.reactnative;
+package chat.portsaid.doctors;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

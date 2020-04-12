@@ -1,6 +1,6 @@
-package chat.rocket.reactnative.share;
+package chat.portsaid.doctors.share;
 
-import chat.rocket.reactnative.BuildConfig;
+import chat.portsaid.doctors.BuildConfig;
 
 import chat.rocket.SharePackage;
 

@@ -1,4 +1,4 @@
-package chat.rocket.reactnative;
+package chat.portsaid.doctors;
 
 import android.content.SharedPreferences;
 
