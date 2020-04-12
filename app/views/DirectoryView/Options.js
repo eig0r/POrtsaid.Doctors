@@ -57,26 +57,13 @@ export default class DirectoryOptions extends PureComponent {
 
 	renderItem = (itemType) => {
 		const { changeType, type: propType, theme } = this.props;
-		let text = 'Users';
-		let icon = 'user';
+	
 		if (itemType === 'channels') {
 			text = 'Channels';
 			icon = 'hashtag';
 		}
 
-		return (
-			<Touch
-				onPress={() => changeType(itemType)}
-				style={styles.dropdownItemButton}
-				theme={theme}
-			>
-				<View style={styles.dropdownItemContainer}>
-					<CustomIcon style={[styles.dropdownItemIcon, { color: themes[theme].bodyText }]} size={22} name={icon} />
-					<Text style={[styles.dropdownItemText, { color: themes[theme].bodyText }]}>{I18n.t(text)}</Text>
-					{propType === itemType ? <Check theme={theme} /> : null}
-				</View>
-			</Touch>
-		);
+	
 	}
 
 	render() {

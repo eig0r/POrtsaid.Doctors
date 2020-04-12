@@ -28,7 +28,7 @@ const Directory = React.memo(({ goDirectory, theme, searching }) => {
 				]}
 			>
 				<CustomIcon style={[styles.directoryIcon, color]} size={22} name='discover' />
-				<Text style={[styles.directoryText, color]}>{I18n.t('Directory')}</Text>
+				<Text style={[styles.directoryText, color]}>أقسام</Text>
 				<DisclosureIndicator theme={theme} />
 			</View>
 		</Touch>

@@ -91,9 +91,9 @@ class RightButtonsContainer extends React.PureComponent {
 			<CustomHeaderButtons>
 				{threadsEnabled ? (
 					<Item
-						title='thread'
-						iconName='thread'
-						onPress={this.goThreadsView}
+						title=''
+					//	iconName='thread'
+						//onPress={this.goThreadsView}
 						testID='room-view-header-threads'
 					/>
 				) : null}

@@ -34,6 +34,7 @@ class RoomActionsView extends React.Component {
 		const options = {
 			...themedHeader(screenProps.theme),
 			title: I18n.t('Actions')
+			
 		};
 		if (screenProps.split) {
 			options.headerLeft = <CloseModalButton navigation={navigation} testID='room-actions-view-close' />;
@@ -224,7 +225,7 @@ class RoomActionsView extends React.Component {
 				route: 'RoomInfoView',
 				// forward room only if room isn't joined
 				params: {
-					rid, t, room, member
+					rid, t, room
 				},
 				disabled: isGroupChat,
 				testID: 'room-actions-info'
@@ -235,47 +236,41 @@ class RoomActionsView extends React.Component {
 			renderItem: this.renderItem
 		}, {
 			data: [
-				{
-					icon: 'file-generic',
-					name: I18n.t('Files'),
-					route: 'MessagesView',
-					params: { rid, t, name: 'Files' },
-					testID: 'room-actions-files'
-				},
-				{
-					icon: 'at',
-					name: I18n.t('Mentions'),
-					route: 'MessagesView',
-					params: { rid, t, name: 'Mentions' },
-					testID: 'room-actions-mentioned'
-				},
-				{
-					icon: 'star',
-					name: I18n.t('Starred'),
-					route: 'MessagesView',
-					params: { rid, t, name: 'Starred' },
-					testID: 'room-actions-starred'
-				},
-				{
-					icon: 'magnifier',
-					name: I18n.t('Search'),
-					route: 'SearchMessagesView',
-					params: { rid },
-					testID: 'room-actions-search'
-				},
-				{
-					icon: 'share',
-					name: I18n.t('Share'),
-					event: this.handleShare,
-					testID: 'room-actions-share'
-				},
-				{
-					icon: 'pin',
-					name: I18n.t('Pinned'),
-					route: 'MessagesView',
-					params: { rid, t, name: 'Pinned' },
-					testID: 'room-actions-pinned'
-				}
+			//	{
+				//	icon: 'file-generic',
+				//	name: I18n.t('Files'),
+			//		route: 'MessagesView',
+			//		params: { rid, t, name: 'Files' },
+			//		testID: 'room-actions-files'
+			//	},
+			//	{
+			//		icon: 'at',
+			//		name: I18n.t('Mentions'),
+			//		route: 'MessagesView',
+			//		params: { rid, t, name: 'Mentions' },
+			//		testID: 'room-actions-mentioned'
+			//	},
+			
+			//	{
+			//		icon: 'magnifier',
+			//		name: I18n.t('Search'),
+			//		route: 'SearchMessagesView',
+			//		params: { rid },
+			//		testID: 'room-actions-search'
+			//	},
+			//	{
+			//		icon: 'share',
+			//		name: I18n.t('Share'),
+			//		event: this.handleShare,
+			//		testID: 'room-actions-share'
+			//	},
+			//	{
+			//		icon: 'pin',
+			//		name: I18n.t('Pinned'),
+			//		route: 'MessagesView',
+			//		params: { rid, t, name: 'Pinned' },
+			//		testID: 'room-actions-pinned'
+			//	}
 			],
 			renderItem: this.renderItem
 		}];
@@ -290,16 +285,7 @@ class RoomActionsView extends React.Component {
 			});
 		}
 
-		if (isGroupChat) {
-			sections[2].data.unshift({
-				icon: 'team',
-				name: I18n.t('Members'),
-				description: membersCount > 0 ? `${ membersCount } ${ I18n.t('members') }` : null,
-				route: 'RoomMembersView',
-				params: { rid, room },
-				testID: 'room-actions-members'
-			});
-		}
+	
 
 		if (t === 'd' && !isGroupChat) {
 			sections.push({
@@ -318,16 +304,7 @@ class RoomActionsView extends React.Component {
 		} else if (t === 'c' || t === 'p') {
 			const actions = [];
 
-			if (canViewMembers) {
-				actions.push({
-					icon: 'team',
-					name: I18n.t('Members'),
-					description: membersCount > 0 ? `${ membersCount } ${ I18n.t('members') }` : null,
-					route: 'RoomMembersView',
-					params: { rid, room },
-					testID: 'room-actions-members'
-				});
-			}
+		
 
 			if (canAddUser) {
 				actions.push({
@@ -384,10 +361,11 @@ class RoomActionsView extends React.Component {
 
 	updateRoomMember = async() => {
 		const { room } = this.state;
+		const { user } = this.props;
 
 		try {
 			if (!RocketChat.isGroupChat(room)) {
-				const roomUserId = RocketChat.getUidDirectMessage(room);
+				const roomUserId = RocketChat.getUidDirectMessage(room, user.id);
 				const result = await RocketChat.getUserInfo(roomUserId);
 				if (result.success) {
 					this.setState({ member: result.user });

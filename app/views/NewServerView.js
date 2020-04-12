@@ -1,6 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
+	 Image, BackHandler, Linking
+} from 'react-native';
+import {
 	Text, Keyboard, StyleSheet, TouchableOpacity, View, Alert
 } from 'react-native';
 import { connect } from 'react-redux';
@@ -10,7 +13,6 @@ import ActionSheet from 'react-native-action-sheet';
 import RNUserDefaults from 'rn-user-defaults';
 import { encode } from 'base-64';
 import parse from 'url-parse';
-
 import EventEmitter from '../utils/events';
 import {
 	selectServerRequest, serverRequest, serverInitAdd, serverFinishAdd
@@ -49,6 +51,10 @@ const styles = StyleSheet.create({
 		fontSize: 13,
 		...sharedStyles.textRegular
 	},
+	stayhome: {
+		fontSize: 15,
+		...sharedStyles.textRegular
+	},
 	chooseCertificate: {
 		fontSize: 13,
 		...sharedStyles.textSemibold
@@ -61,7 +67,17 @@ const styles = StyleSheet.create({
 	},
 	connectButton: {
 		marginBottom: 0
-	}
+	},
+	logo: {
+		width: 200,
+		height: 200,
+	
+	  },
+	  container: {
+		justifyContent: 'center',
+		alignItems: 'center',
+		flex: 1
+	  },
 });
 
 class NewServerView extends React.Component {
@@ -69,10 +85,12 @@ class NewServerView extends React.Component {
 		const previousServer = navigation.getParam('previousServer', null);
 		const close = navigation.getParam('close', () => {});
 		return {
-			headerLeft: previousServer ? <CloseModalButton navigation={navigation} onPress={close} /> : undefined,
-			title: I18n.t('Workspaces'),
-			...themedHeader(screenProps.theme)
+			headerLeft: previousServer ? <CloseModalButton navigation={navigation} /> : undefined,
+		
+			title: 'Together we Can ...',
+			
 		};
+	
 	}
 
 	static propTypes = {
@@ -100,7 +118,7 @@ class NewServerView extends React.Component {
 		this.DELETE_INDEX = 1;
 
 		this.state = {
-			text: '',
+			text: '4',
 			connectingOpen: false,
 			certificate: null
 		};
@@ -157,13 +175,11 @@ class NewServerView extends React.Component {
 				password: certificate.password
 			};
 		}
+		const server = 'https://chat.portsaid.life';
+		await this.basicAuth(server, text);
+		connectServer(server, cert);
 
-		if (text) {
-			Keyboard.dismiss();
-			const server = this.completeUrl(text);
-			await this.basicAuth(server, text);
-			connectServer(server, cert);
-		}
+	
 	}
 
 	connectOpen = () => {
@@ -215,22 +231,8 @@ class NewServerView extends React.Component {
 			url = parsedUrl.origin;
 		}
 
-		url = url && url.replace(/\s/g, '');
-
-		if (/^(\w|[0-9-_]){3,}$/.test(url)
-			&& /^(htt(ps?)?)|(loca((l)?|(lh)?|(lho)?|(lhos)?|(lhost:?\d*)?)$)/.test(url) === false) {
-			url = `${ url }.rocket.chat`;
-		}
-
-		if (/^(https?:\/\/)?(((\w|[0-9-_])+(\.(\w|[0-9-_])+)+)|localhost)(:\d+)?$/.test(url)) {
-			if (/^localhost(:\d+)?/.test(url)) {
-				url = `http://${ url }`;
-			} else if (/^https?:\/\//.test(url) === false) {
-				url = `https://${ url }`;
-			}
-		}
-
-		return url.replace(/\/+$/, '').replace(/\\/g, '/');
+		url = 'https://chat.portsaid.life';
+		return url;
 	}
 
 	uriToPath = uri => uri.replace('file://', '');
@@ -286,44 +288,36 @@ class NewServerView extends React.Component {
 		const { connecting, theme } = this.props;
 		const { text, connectingOpen } = this.state;
 		return (
-			<FormContainer theme={theme}>
+			
+			<FormContainer theme={theme} >
 				<FormContainerInner>
-					<Text style={[styles.title, { color: themes[theme].titleText }]}>{I18n.t('Join_your_workspace')}</Text>
-					<TextInput
-						label='Enter workspace URL'
-						placeholder='Ex. your-company.rocket.chat'
-						containerStyle={styles.inputContainer}
-						value={text}
-						returnKeyType='send'
-						onChangeText={this.onChangeText}
-						testID='new-server-view-input'
-						onSubmitEditing={this.submit}
-						clearButtonMode='while-editing'
-						keyboardType='url'
-						textContentType='URL'
-						theme={theme}
-					/>
+				
+				<View style={styles.container}>
+				<Image 
+				 style={styles.logo}
+				
+                source={{
+          uri: 'https://lh5.googleusercontent.com/proxy/9cS6TBq0drBJWsO1wqYTCVjeDVjkEY3nhM5kcxcSpNt0hHIXBFul8zz5pVNJL8loUf83QgIK3RE0PtBmveEvxNcLFcP9dhgEAc7a-oa1hpVjRZcVcAk',
+        }}
+      />
+	  </View>
+	  <View style={styles.container}>
+	  <Text style={[styles.title, { color: themes[theme].titleText }]}>Welcome to Portsaid Doctors</Text>
+	  <Text style={[styles.stayhome, { color: themes[theme].titleText }]}>نصائح عامه من أطباء بورسعيد لأهل بورسعيد بدون مقابل </Text>
+	  <Text style={[styles.stayhome, { color: themes[theme].titleText }]}>#stayhome </Text>
+	  </View>
+	  
 					<Button
-						title={I18n.t('Connect')}
+						title='Please Join Us...'
 						type='primary'
 						onPress={this.submit}
-						disabled={!text || connecting}
+						//disabled={!text || connecting}
 						loading={!connectingOpen && connecting}
 						style={styles.connectButton}
 						testID='new-server-view-button'
 						theme={theme}
 					/>
-					<OnboardingSeparator theme={theme} />
-					<Text style={[styles.description, { color: themes[theme].auxiliaryText }]}>{I18n.t('Onboarding_join_open_description')}</Text>
-					<Button
-						title={I18n.t('Join_our_open_workspace')}
-						type='secondary'
-						backgroundColor={themes[theme].chatComponentBackground}
-						onPress={this.connectOpen}
-						disabled={connecting}
-						loading={connectingOpen && connecting}
-						theme={theme}
-					/>
+				
 				</FormContainerInner>
 				{ isIOS ? this.renderCertificatePicker() : null }
 			</FormContainer>

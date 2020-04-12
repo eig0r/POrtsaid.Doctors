@@ -23,38 +23,11 @@ import database from '../../lib/database';
 
 const LANGUAGES = [
 	{
-		label: '简体中文',
-		value: 'zh-CN'
-	}, {
-		label: 'Deutsch',
-		value: 'de'
+		label:'العربية',
+				value:'ar'
 	}, {
 		label: 'English',
 		value: 'en'
-	}, {
-		label: 'Español (ES)',
-		value: 'es-ES'
-	}, {
-		label: 'Français',
-		value: 'fr'
-	}, {
-		label: 'Português (BR)',
-		value: 'pt-BR'
-	}, {
-		label: 'Português (PT)',
-		value: 'pt-PT'
-	}, {
-		label: 'Russian',
-		value: 'ru'
-	}, {
-		label: 'Nederlands',
-		value: 'nl'
-	}, {
-		label: 'Italiano',
-		value: 'it'
-	}, {
-		label: '日本語',
-		value: 'ja'
 	}
 ];
 

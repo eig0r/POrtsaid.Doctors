@@ -21,8 +21,6 @@ import { withSplit } from '../split';
 import { themedHeader } from '../utils/navigation';
 import { getUserSelector } from '../selectors/login';
 import { CustomHeaderButtons, Item, CancelModalButton } from '../containers/HeaderButton';
-import store from '../lib/createStore';
-import { setUser } from '../actions/login';
 
 const STATUS = [{
 	id: 'online',
@@ -77,7 +75,6 @@ class StatusView extends React.Component {
 
 	static propTypes = {
 		user: PropTypes.shape({
-			id: PropTypes.string,
 			status: PropTypes.string,
 			statusText: PropTypes.string
 		}),
@@ -115,12 +112,11 @@ class StatusView extends React.Component {
 
 	setCustomStatus = async() => {
 		const { statusText } = this.state;
-		const { user } = this.props;
 
 		this.setState({ loading: true });
 
 		try {
-			const result = await RocketChat.setUserStatus(user.status, statusText);
+			const result = await RocketChat.setUserStatus(statusText);
 			if (result.success) {
 				EventEmitter.emit(LISTENER, { message: I18n.t('Status_saved_successfully') });
 			} else {
@@ -167,7 +163,6 @@ class StatusView extends React.Component {
 	}
 
 	renderItem = ({ item }) => {
-		const { statusText } = this.state;
 		const { theme, user } = this.props;
 		const { id, name } = item;
 		return (
@@ -176,10 +171,7 @@ class StatusView extends React.Component {
 				onPress={async() => {
 					if (user.status !== item.id) {
 						try {
-							const result = await RocketChat.setUserStatus(item.id, statusText);
-							if (result.success) {
-								store.dispatch(setUser({ status: item.id }));
-							}
+							await RocketChat.setUserPresenceDefaultStatus(item.id);
 						} catch (e) {
 							log(e);
 						}

@@ -29,7 +29,7 @@ class DirectoryView extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => {
 		const options = {
 			...themedHeader(screenProps.theme),
-			title: I18n.t('Directory')
+			title: 'الأقسام'
 		};
 		if (screenProps.split) {
 			options.headerLeft = <CloseModalButton navigation={navigation} testID='directory-view-close' />;
@@ -154,7 +154,7 @@ class DirectoryView extends React.Component {
 					testID='federation-view-search'
 				/>
 				<Touch
-					onPress={this.toggleDropdown}
+					//onPress={this.toggleDropdown}
 					style={styles.dropdownItemButton}
 					testID='federation-view-create-channel'
 					theme={theme}
