@@ -17,6 +17,7 @@ import { themedHeader } from '../utils/navigation';
 import FormContainer, { FormContainerInner } from '../containers/FormContainer';
 import TextInput from '../containers/TextInput';
 import isValidEmail from '../utils/isValidEmail';
+import isValidUserName from '../utils/isValidUserName';
 import { showErrorAlert } from '../utils/info';
 import RocketChat from '../lib/rocketchat';
 import { loginRequest as loginRequestAction } from '../actions/login';
@@ -115,7 +116,7 @@ class RegisterView extends React.Component {
 				requiredCheck = requiredCheck && customFields[key] && Boolean(customFields[key].trim());
 			}
 		});
-		return name.trim() && email.trim() && password.trim() && username.trim() && isValidEmail(email) && requiredCheck;
+		return name.trim() && email.trim() && password.trim() && username.trim() &&  isValidUserName(username.trim()) && isValidEmail(email) && requiredCheck;
 	}
 
 	submit = async() => {
