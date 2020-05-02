@@ -2,7 +2,9 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-
+import {
+	Image, BackHandler, Linking
+} from 'react-native';
 import I18n from '../../i18n';
 import Button from '../../containers/Button';
 import styles from './styles';
@@ -13,10 +15,10 @@ import { themedHeader } from '../../utils/navigation';
 import ServerAvatar from './ServerAvatar';
 import { getShowLoginButton } from '../../selectors/login';
 
+
 class WorkspaceView extends React.Component {
 	static navigationOptions = ({ screenProps }) => ({
-		title: I18n.t('Your_workspace'),
-		...themedHeader(screenProps.theme)
+	
 	})
 
 	static propTypes = {
@@ -49,9 +51,20 @@ class WorkspaceView extends React.Component {
 			<FormContainer theme={theme}>
 				<FormContainerInner>
 					<View style={styles.alignItemsCenter}>
-						<ServerAvatar theme={theme} url={server} image={Assets_favicon_512 && Assets_favicon_512.defaultUrl} />
+					
+				
+				<Image 
+				 style={styles.logo}
+				
+                source={{
+          uri: 'https://lh5.googleusercontent.com/proxy/9cS6TBq0drBJWsO1wqYTCVjeDVjkEY3nhM5kcxcSpNt0hHIXBFul8zz5pVNJL8loUf83QgIK3RE0PtBmveEvxNcLFcP9dhgEAc7a-oa1hpVjRZcVcAk',
+        }}
+      />
+	
+   
+					
 						<Text style={[styles.serverName, { color: themes[theme].titleText }]}>{Site_Name}</Text>
-						<Text style={[styles.serverUrl, { color: themes[theme].auxiliaryText }]}>{Site_Url}</Text>
+						<Text style={[styles.serverUrl, { color: themes[theme].auxiliaryText }]}>www.Portsaid.Life</Text>
 					</View>
 					{showLoginButton
 						? (

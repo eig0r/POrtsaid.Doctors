@@ -20,5 +20,10 @@ export default StyleSheet.create({
 	},
 	alignItemsCenter: {
 		alignItems: 'center'
-	}
+	},
+	logo: {
+		width: 200,
+		height: 200,
+	
+	  }
 });

@@ -125,25 +125,7 @@ class RoomsListView extends React.Component {
 				/>
 			),
 			headerTitle: <RoomsListHeaderView />,
-			headerRight: searching && isAndroid ? null : (
-				<CustomHeaderButtons>
-					{isAndroid ? (
-						<Item
-							title='search'
-							iconName='magnifier'
-							onPress={initSearching}
-						/>
-					) : null}
-					<Item
-						title='new'
-						iconName='edit-rounded'
-						onPress={() => navigation.navigate('NewMessageView', {
-							onPressItem
-						})}
-						testID='rooms-list-view-create-channel'
-					/>
-				</CustomHeaderButtons>
-			)
+			
 		};
 	};
 
@@ -174,7 +156,6 @@ class RoomsListView extends React.Component {
 		roomsRequest: PropTypes.func,
 		closeServerDropdown: PropTypes.func,
 		useRealName: PropTypes.bool,
-		connected: PropTypes.bool,
 		split: PropTypes.bool
 	};
 
@@ -303,7 +284,6 @@ class RoomsListView extends React.Component {
 			showFavorites,
 			showUnread,
 			appState,
-			connected,
 			roomsRequest
 		} = this.props;
 
@@ -319,7 +299,6 @@ class RoomsListView extends React.Component {
 		} else if (
 			appState === 'foreground'
 			&& appState !== prevProps.appState
-			&& connected
 		) {
 			roomsRequest();
 		}
@@ -531,7 +510,10 @@ class RoomsListView extends React.Component {
 
 	getUserPresence = uid => RocketChat.getUserPresence(uid)
 
-	getUidDirectMessage = room => RocketChat.getUidDirectMessage(room);
+	getUidDirectMessage = (room) => {
+		const { user: { id } } = this.props;
+		return RocketChat.getUidDirectMessage(room, id);
+	}
 
 	goRoom = (item) => {
 		const { navigation } = this.props;
@@ -894,7 +876,6 @@ class RoomsListView extends React.Component {
 const mapStateToProps = state => ({
 	user: getUserSelector(state),
 	server: state.server.server,
-	connected: state.server.connected,
 	searchText: state.rooms.searchText,
 	loadingServer: state.server.loading,
 	showServerDropdown: state.rooms.showServerDropdown,

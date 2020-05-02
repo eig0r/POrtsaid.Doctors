@@ -54,9 +54,7 @@ class LoginView extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => {
 		const title = navigation.getParam('title', 'Rocket.Chat');
 		return {
-			...themedHeader(screenProps.theme),
-			title,
-			headerRight: <LegalButton testID='login-view-more' navigation={navigation} />
+		
 		};
 	}
 
